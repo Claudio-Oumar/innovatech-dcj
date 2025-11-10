@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Login - TurneroPro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .btn:active {
+            transform: translateY(0);
+        }
+        
+        .resultado {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .resultado.success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+        
+        .resultado.error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+        
+        .usuarios-test {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .usuarios-test h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .usuarios-test ul {
+            list-style: none;
+        }
+        
+        .usuarios-test li {
+            padding: 8px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 3px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .usuarios-test li:hover {
+            background: #e9ecef;
+        }
+        
+        .usuarios-test code {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test de Login</h1>
+        <p class="subtitle">Herramienta de prueba de autenticación</p>
+        
+        <form id="testForm">
+            <div class="form-group">
+                <label for="usuario">Usuario / Email:</label>
+                <input type="text" id="usuario" name="usuario" value="cliente1" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input type="text" id="password" name="password" value="password123" required>
+            </div>
+            
+            <button type="submit" class="btn">🔐 Probar Login</button>
+        </form>
+        
+        <div id="resultado" class="resultado"></div>
+        
+        <div class="usuarios-test">
+            <h3>👤 Usuarios de prueba (Click para usar):</h3>
+            <ul>
+                <li onclick="usarCredencial('cliente1', 'password123')">
+                    <strong>Cliente 1:</strong> <code>cliente1</code> / <code>password123</code>
+                </li>
+                <li onclick="usarCredencial('cliente2', 'password123')">
+                    <strong>Cliente 2:</strong> <code>cliente2</code> / <code>password123</code>
+                </li>
+                <li onclick="usarCredencial('barbero1', 'password123')">
+                    <strong>Barbero 1:</strong> <code>barbero1</code> / <code>password123</code>
+                </li>
+                <li onclick="usarCredencial('barbero2', 'password123')">
+                    <strong>Barbero 2:</strong> <code>barbero2</code> / <code>password123</code>
+                </li>
+                <li onclick="usarCredencial('admin', 'password123')">
+                    <strong>Admin:</strong> <code>admin</code> / <code>password123</code>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        const API_URL = 'http://localhost:8081/api';
+        
+        function usarCredencial(usuario, password) {
+            document.getElementById('usuario').value = usuario;
+            document.getElementById('password').value = password;
+        }
+        
+        document.getElementById('testForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const usuario = document.getElementById('usuario').value;
+            const password = document.getElementById('password').value;
+            const resultadoDiv = document.getElementById('resultado');
+            
+            resultadoDiv.style.display = 'block';
+            resultadoDiv.className = 'resultado';
+            resultadoDiv.innerHTML = '⏳ Probando autenticación...';
+            
+            try {
+                console.log('Enviando request:', { usernameOrEmail: usuario, password: '***' });
+                
+                const response = await fetch(`${API_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        usernameOrEmail: usuario,
+                        password: password
+                    })
+                });
+                
+                console.log('Status:', response.status);
+                const data = await response.json();
+                console.log('Response:', data);
+                
+                if (response.ok) {
+                    resultadoDiv.className = 'resultado success';
+                    resultadoDiv.innerHTML = `
+                        <h3>✅ Login Exitoso!</h3>
+                        <p><strong>Token:</strong> ${data.token.substring(0, 30)}...</p>
+                        <p><strong>ID:</strong> ${data.id}</p>
+                        <p><strong>Username:</strong> ${data.username}</p>
+                        <p><strong>Email:</strong> ${data.email}</p>
+                        <p><strong>Nombre:</strong> ${data.nombreCompleto}</p>
+                        <p><strong>Rol:</strong> ${data.rol}</p>
+                    `;
+                } else {
+                    resultadoDiv.className = 'resultado error';
+                    resultadoDiv.innerHTML = `
+                        <h3>❌ Error de Autenticación</h3>
+                        <p><strong>Status:</strong> ${response.status}</p>
+                        <p><strong>Mensaje:</strong> ${data.mensaje || 'Credenciales inválidas'}</p>
+                        <p><strong>Usuario probado:</strong> ${usuario}</p>
+                    `;
+                }
+            } catch (error) {
+                console.error('Error completo:', error);
+                resultadoDiv.className = 'resultado error';
+                resultadoDiv.innerHTML = `
+                    <h3>❌ Error de Conexión</h3>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                    <p>No se pudo conectar con el servidor. Verifica que esté corriendo.</p>
+                `;
+            }
+        });
+        
+        // Test automático al cargar
+        window.addEventListener('load', () => {
+            console.log('Página de prueba cargada');
+            console.log('API URL:', API_URL);
+        });
+    </script>
+</body>
+</html>

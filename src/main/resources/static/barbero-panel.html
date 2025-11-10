@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Barbero - TurneroPro</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <h2>TurneroPro - Barbero</h2>
+            </div>
+            <div class="nav-links">
+                <span id="nombreUsuario" style="color: white; margin-right: 1rem;"></span>
+                <a href="#" id="btnCerrarSesion">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container dashboard">
+        <div class="dashboard-header">
+            <h1>Bienvenido, <span id="nombreBarbero"></span></h1>
+            <p>Gestiona tus horarios y visualiza tus reservas</p>
+        </div>
+
+        <div class="card">
+            <h3>Configurar Horarios de Atención</h3>
+            <div id="mensajeHorario"></div>
+            <form id="formNuevoHorario">
+                <div class="form-group">
+                    <label for="diaSemana">Día de la Semana *</label>
+                    <select id="diaSemana" required>
+                        <option value="">Seleccione un día...</option>
+                        <option value="MONDAY">Lunes</option>
+                        <option value="TUESDAY">Martes</option>
+                        <option value="WEDNESDAY">Miércoles</option>
+                        <option value="THURSDAY">Jueves</option>
+                        <option value="FRIDAY">Viernes</option>
+                        <option value="SATURDAY">Sábado</option>
+                        <option value="SUNDAY">Domingo</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="horaInicio">Hora de Inicio *</label>
+                    <input type="time" id="horaInicio" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="horaFin">Hora de Fin *</label>
+                    <input type="time" id="horaFin" required>
+                </div>
+                
+                <button type="submit">Agregar Horario</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Mis Horarios Configurados</h3>
+            <div id="listaHorarios">
+                <p>Cargando horarios...</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>Mis Reservas</h3>
+            <div id="listaReservas">
+                <p>Cargando reservas...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/barbero-panel.js"></script>
+</body>
+</html>

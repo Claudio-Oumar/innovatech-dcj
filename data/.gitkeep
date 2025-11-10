@@ -1,0 +1,12 @@
+# Carpeta de datos
+
+Esta carpeta contiene la base de datos SQLite embebida.
+
+## Archivo generado automáticamente:
+- `turnero_pro.db` - Base de datos SQLite con todas las tablas y datos
+
+> **Nota:** Este archivo se crea automáticamente al ejecutar la aplicación por primera vez.
+> Los datos iniciales (seeders) se cargan mediante la clase `DataSeeder.java`.
+
+## Ignorar en Git
+El archivo `.db` está en `.gitignore` para evitar subir datos locales al repositorio.
